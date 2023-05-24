@@ -5,14 +5,16 @@ import roboticstoolbox as rtb
 import spatialmath as sm
 
 
-from numpy import pi
-from numpy import typing
+from numpy import pi, typing
+
+from spatialmath import SE3
 
 # messages
 from std_msgs.msg import String
 from geometry_msgs.msg import Point,Pose
 from sensor_msgs.msg import JointState
 from trajectory_msgs.msg import JointTrajectory, JointTrajectoryPoint
+#from robotics_lab5.msg import PincherPose
 
 class pincher():
     def __init__(self):
@@ -31,9 +33,11 @@ class pincher():
         # ROS communications
         rospy.loginfo("pincher start") 
         self.positionSub = rospy.Subscriber("/target", Point,self.ikinematics)
-        
+    
         self.jStateSub = rospy.Subscriber("/dynamixel_workbench/joint_states", JointState,self.fkinematics)
-
+            
+        self.jTrajecPub = rospy.Publisher('/joint_trajectory', JointTrajectory, queue_size=0)
+        
     def rosCommunication(self):
 
         while not rospy.is_shutdown():
@@ -45,9 +49,9 @@ class pincher():
     def fkinematics(self,JointState_msg):
         q = JointState_msg.position
         
-        MTH = robot.fkine(q)
+        MTH = self.robot.fkine(q)
+        position  =MTH.t
 
-        
         pass
 
     def ikinematics(self,Point_msg):
@@ -55,10 +59,39 @@ class pincher():
         L2 = self.L2
         L3 = self.L3
         L4 = self.L4
+        
+        x = Point_msg.x
+        y = Point_msg.y
+        z = Point_msg.z
+        
+        theta = pi/4
+        #Point_msg = PincherPose_msg.Point 
+        
+        q1 = np.arctan2(y,x)
+        
+        q4 = theta
+        
+        wrist_center = SE3.Trans(-L4, 0, 0)*SE3.Ry(-q4)*SE3.Rz(q1)*SE3.Trans(x, y, z)
+        pos_wrist_center =wrist_center.t
+        
+        x_c = pos_wrist_center[0]
+        y_c = pos_wrist_center[1]
+        z_c = pos_wrist_center[2]
+        
+        L = np.sqrt((z_c-L1)**2 + x_c**2 +y_c**2)
 
-        Point_msg.x
-        Point_msg.y
-        Point_msg.z
+        c_q3 = (L-(L2**2 + L3**2) )/(2*L2*L3)
+        s_q3 = np.sqrt(1 - c_q3**2)
+        q3 = np.arctan2(s_q3,c_q3)
+        
+        alpha = np.arctan2(L3*c_q3 , L2 + L3*s_q3)
+        gamma = np.arctan2(z-L1, np.sqrt(x**2+y**2) )
+        
+        q2 = gamma - alpha
+
+        q = [q1,q2,q3,q4]
+        
+        print(q)
 
         pass
 
