@@ -14,7 +14,7 @@ from std_msgs.msg import String
 from geometry_msgs.msg import Point,Pose
 from sensor_msgs.msg import JointState
 from trajectory_msgs.msg import JointTrajectory, JointTrajectoryPoint
-#from robotics_lab5.msg import PincherPose
+from robotics_lab5.msg import PincherPose
 
 class pincher():
     def __init__(self):
@@ -32,7 +32,7 @@ class pincher():
         
         # ROS communications
         rospy.loginfo("pincher start") 
-        self.positionSub = rospy.Subscriber("/target", Point,self.ikinematics)
+        self.positionSub = rospy.Subscriber("/target_pincher_pose", PincherPose,self.ikinematics)
     
         self.jStateSub = rospy.Subscriber("/dynamixel_workbench/joint_states", JointState,self.fkinematics)
             
@@ -54,7 +54,7 @@ class pincher():
 
         pass
 
-    def ikinematics(self,Point_msg):
+    def ikinematics(self,PincherPose_msg):
         L1 = self.L1
         L2 = self.L2
         L3 = self.L3
@@ -64,8 +64,8 @@ class pincher():
         y = Point_msg.y
         z = Point_msg.z
         
-        theta = pi/4
-        #Point_msg = PincherPose_msg.Point 
+        theta = PincherPose_msg.theta
+        Point_msg = PincherPose_msg.Point 
         
         q1 = np.arctan2(y,x)
         
