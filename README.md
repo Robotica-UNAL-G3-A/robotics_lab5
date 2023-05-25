@@ -13,9 +13,10 @@
 
 ## Reference
 
-
+[^python-modules]:[python modules in ROS ](http://docs.ros.org/en/jade/api/catkin/html/howto/format2/installing_python.html)
 
 <!---
+[^lab-guide]:[Lab guide ](https://github.com/fegonzalez7/rob_unal_clase3)
 
 Design doc
 Position movement control of the Phantom X Pincher robot 
