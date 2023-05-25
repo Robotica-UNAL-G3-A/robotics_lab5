@@ -1,2 +1,2 @@
 geometry_msgs/Point point
-int64 theta
+float64 theta
