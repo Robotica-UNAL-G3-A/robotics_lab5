@@ -2,6 +2,7 @@
 
 import rospy
 import numpy as np
+import time
 
 import roboticstoolbox as rtb
 import spatialmath as sm
@@ -44,13 +45,70 @@ class Pincher():
         
         self.positionPub = rospy.Publisher("/real_pincher_pose", PincherPose,queue_size=10)
         
-    #def rosCommunication(self):
+    def rosCommunication(self):
+        # calibration data
+        caliTraj = [[0, 0, 0, 0, 0 ],
+                    [-90, 0, 0, 0, 0 ],                 
+                    [90, 0, 0, 0, 0 ],
+                    [0, 90, 0, 0, 0 ],
+                    [0, 0, 0, 0, 0 ],
+                    [0, -90, 0, 0, 0 ],
+                    [0, 0, 90, 0, 0 ],
+                    [0, 0, -90, 0, 0 ],
+                    [0, 0, 0, 90, 0 ],
+                    [0, 0, 0, -90, 0 ],
+                    [0, 0, 0, 0, -90 ],
+                    [0, 0, 0, 0, 0 ]
+                    ]
+        
+        q5_close =-100
+        # min radius
+        r_min1 = [-84.96,  -50.68, -144.43,  101.95, q5_close ]
+        r_min2 = [100, -50.68, -144.43,  101.95, q5_close ]
+        rminTraj = [r_min1, r_min2]
 
+        # Max radius
+        r_max1 = [-59.47,  -89.65,  -20.51,   19.92, q5_close]
+
+        r_max2 = [77.47,  -89.65,  -20.51,   19.92, q5_close]
+        rmaxTraj = [r_max2,r_max1]
+        
+        # Gripper close q5=56 
+
+        #triangle
+        t1 = [-17.29,  -45.12, -123.34,   70.31, q5_close]
+        t2 = [-21.09,  -57.4, -101.37,   70.31, q5_close]
+        t3 = [ -31.35,  -56.54, -108.11,   71.19, q5_close]
+        t4 = [-17.29,  -45.12, -123.34,   70.31, q5_close]
+        
+
+        triangTraject = [t1,t2,t3,t4]
+
+        # cuadrado
+        
+        c1 = [-45.41,  -52.73, -120.70,   82.32, q5_close]
+        c2 = [-45.12,  -60.64, -103.42,   79.69, q5_close]
+        c3 = [-53.32,  -62.11, -101.07,   79.69, q5_close]
+        c4 = [-53.91,  -55.96, -115.43,   79.98, q5_close]
+
+        squareTraject = [c1,c2,c3,c4]
+        
+        currentTraject = rminTraj + rmaxTraj+ triangTraject + squareTraject
+        
+        #currentTraject =caliTraj
+        
         while not rospy.is_shutdown():
             #print(state)
-            rospy.loginfo("pincher running") 
-        
-            rospy.sleep(30)
+            #if ():
+            #    rospy.loginfo("pincher running") 
+            rospy.sleep(5)
+            
+            for idx,q in enumerate(currentTraject):
+                self.publishTrajectory(q)
+                rospy.loginfo("pos " + str(idx) + " " +str(q))
+                rospy.sleep(10)            
+                    
+            rospy.sleep(5)
 
     def fkinematics(self,JointState_msg):
         #rostopic pub -r 10 /dynamixel_workbench/joint_states trajectory_msgs/JointTrajectory  '{linear:  {x: 0.1, y: 0.0, z: 0.0}, angular: {x: 0.0,y: 0.0,z: 0.0}}'
@@ -69,8 +127,8 @@ class Pincher():
         
         rpy_angles= MTH.rpy()
         real_pose.theta = rpy_angles[1]
-        rospy.loginfo(real_pose)
-        rospy.loginfo(real_pose.point)
+        #rospy.loginfo(real_pose)
+        #rospy.loginfo(real_pose.point)
         #vector_pos = [real_pose.point.x, real_pose.point.y, real_pose.point.z, real_pose.theta]
         
         self.positionPub.publish(real_pose)
@@ -122,17 +180,23 @@ class Pincher():
             q5 = 100    
         q.append(q5)
         
+        self.publishTrajectory(q)
+        
+    def publishTrajectory(self,q):    
+        # q input in deg
         
         state = JointTrajectory()        
         state.header.stamp = rospy.Time.now()
         state.joint_names = ["joint_1","joint_2","joint_3","joint_4","joint_5"]
         point = JointTrajectoryPoint()
-        point.positions = q
+        point.positions = list(np.multiply(pi/180.0,q))  # conversion
         point.time_from_start = rospy.Duration(0.5)
         state.points.append(point)
         self.jTrajecPub.publish(state)
         
         rospy.loginfo("pincher ikinematics "+ str(np.round(q,3)) )
+        
+        rospy.loginfo("pincher state "+ str(state))
         
         pass
 
@@ -144,7 +208,9 @@ if __name__ == '__main__':
     try:
         
         robot = Pincher()
-        #robot.rosCommunication()
+        
+            
+        robot.rosCommunication()
 
     except rospy.ROSInterruptException:
         pass
