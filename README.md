@@ -3,6 +3,9 @@
 
 ## Video: 
 
+https://youtu.be/Wdw1Ll6Tfwo
+[![Alt text](https://img.youtube.com/vi/Wdw1Ll6Tfwo/0.jpg)](https://youtu.be/Wdw1Ll6Tfwo)
+
 ## Conclusions 
 
 
