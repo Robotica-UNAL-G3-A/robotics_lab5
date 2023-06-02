@@ -1,4 +1,7 @@
-# Robotic's lab 4: inverse kinematics
+# Robotic's lab 5: inverse kinematics
+
+## Inverse kinematics 
+
 
 
 ## Video: 
