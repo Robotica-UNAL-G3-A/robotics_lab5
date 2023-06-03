@@ -32,10 +32,10 @@ Then we examine the second and fourth joint. For this purpouse we use the next p
 
 ![capture robotStudio signal creation](/media/Proyeccion_q2_q4.png) 
 
-$90=q_2+\alpha+\gama \implies q_2=\alpha+\gama-90$
+$90=q_2+\alpha+\gamma \implies q_2=\alpha+\gamma-90$
 
 $\alpha = atan2(z_c-L_1,\sqrt(x^2+y^2))$
-$\gama = atan2(L_3s_{q3},L_2+L_3c_{q3})$
+$\gamma = atan2(L_3s_{q3},L_2+L_3c_{q3})$
 
 Finally for the last joint we have:
 
