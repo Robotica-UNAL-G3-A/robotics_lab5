@@ -24,7 +24,7 @@ We solve the equation for $cos(q_3)$ and finally get the next equation system:
 
 $c_{q3}=\frac{L^2-(L_2^2+L_3^2)}{2L_2L_3}$
 
-$s_{q_3}=\sqrt(1-c_{q3})$
+$s_{q_3}=\sqrt{1-c_{q3}}$
 
 $q_3=atan2(s_{q3},c_{q3})$
 
@@ -40,7 +40,7 @@ For $\alpha$ we construct a right triangule and use $atan2$:
 
 $\alpha = atan2(z_c-L_1,\sqrt(x^2+y^2))$
 
-As above, we use another right triangule for $\gama$:
+As above, we use another right triangule for $\gamma$:
 
 $\gamma = atan2(L_3s_{q3},L_2+L_3c_{q3})$
 
