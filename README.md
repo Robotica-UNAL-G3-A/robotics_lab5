@@ -40,7 +40,7 @@ $\gamma = atan2(L_3s_{q3},L_2+L_3c_{q3})$
 Finally for the last joint we have:
 
 $\theta =  90 + q_2 + q_3 + q_4$
-$q_4 = \theta -(90 + q_2 + q_3)$
+$q_4 = \theta -(90 + q_2 + q_3)$s
 
 
 ## Video: 
