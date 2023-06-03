@@ -32,15 +32,25 @@ Then we examine the second and fourth joint. For this purpouse we use the next p
 
 ![capture robotStudio signal creation](/media/Proyeccion_q2_q4.png) 
 
+From the image: 
+
 $90=q_2+\alpha+\gamma \implies q_2=\alpha+\gamma-90$
 
+For $\alpha$ we construct a right triangule and use $atan2$:
+
 $\alpha = atan2(z_c-L_1,\sqrt(x^2+y^2))$
+
+As above, we use another right triangule for $\gama$:
+
 $\gamma = atan2(L_3s_{q3},L_2+L_3c_{q3})$
 
-Finally for the last joint we have:
+Finally for the last joint we know that the sum of every joint angle is the desired orientation:
 
 $\theta =  90 + q_2 + q_3 + q_4$
-$q_4 = \theta -(90 + q_2 + q_3)$s
+
+We solve for $q_4$:
+
+$q_4 = \theta -(90 + q_2 + q_3)$  
 
 
 ## Video: 
