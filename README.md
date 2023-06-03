@@ -2,6 +2,9 @@
 
 ## Inverse kinematics 
 
+![capture robotStudio signal creation](/media/Proyeccion_q1.png) 
+![capture robotStudio signal creation](/media/Proyeccion_q3.png) 
+![capture robotStudio signal creation](/media/Proyeccion_q2_q4.png) 
 
 
 ## Video: 
