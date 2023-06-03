@@ -28,7 +28,19 @@ $s_{q_3}=\sqrt(1-c_{q3})$
 
 $q_3=atan2(s_{q3},c_{q3})$
 
+Then we examine the second and fourth joint. For this purpouse we use the next proyection:
+
 ![capture robotStudio signal creation](/media/Proyeccion_q2_q4.png) 
+
+$90=q_2+\alpha+\gama \implies q_2=\alpha+\gama-90$
+
+$\alpha = atan2(z_c-L_1,\sqrt(x^2+y^2))$
+$\gama = atan2(L_3s_{q3},L_2+L_3c_{q3})$
+
+Finally for the last joint we have:
+
+$\theta =  90 + q_2 + q_3 + q_4$
+$q_4 = \theta -(90 + q_2 + q_3)$
 
 
 ## Video: 
